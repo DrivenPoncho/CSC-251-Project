@@ -1,103 +1,85 @@
 public class Policy
+{
+   private String policyNumber;
+   private String providerName;
+   private policyHolderM poH;
+   public static int PolicyCount = 0;//also inspired from the solution, the policycounter.
+   //at first, i figured i could've just gotten the size of the policy array and printed that instead,
+   //WHICH WORKS, BY THE WAY, I JUST TESTED IT. i'll just do it my way for originality
+   
+   public Policy()
    {
-      private int policyNumber;
-      private String policyName;
-      private String policyFirst;
-      private String policyLast;
-      private int policyAge;
-      private int smokeStatus;
-      private int policyHeight;
-      private int policyWeight;
+      policyNumber = "";
+      providerName = "";
+      poH = new policyHolderM(poH);
 
-      public int setPolNum (int polNum)
-      {
-         polNum = policyNumber;
-         return polNum;         
-      }
-      public String setPolName (String polyname)
-      {
-         polyname = policyName;
-         return polyname;
-      }
-      public String setPolFirst (String polFirst)
-      {
-         polFirst = policyFirst;
-         return polFirst;
-      }
-      public String setPolLast (String polLast)
-      {
-         polLast = policyLast;
-         return polLast;
-      }
-      public int setPolAge (int polAge)
-      {
-         polAge = policyAge;
-         return polAge;
-      }
-      public int setSmoke (int polSmoke)
-      {
-         polSmoke = smokeStatus;
-         return polSmoke;
-      }
-      public double setPolHeight (double polHeight)
-      {
-         polHeight = policyHeight;
-         return polHeight;
-      }
-      public double setPolWeight (double polWeight)
-      {
-         polWeight = policyWeight;
-         return polWeight;
-      }
-
-
-
-
-      
-      public double BMI (double holderHeight, double holderWeight)
-      {  
-         int bythepowerof = 2;
-         
-         double BMI = (holderWeight * 703) / (Math.pow(holderHeight, bythepowerof));
-         
-         return BMI;
-      }
-      
-      public double price (int age, int smoker, double bmi)
-      {
-      
-         double totalFee = 600;
-         
-         if (age > 50)
-         {
-            totalFee = totalFee + 75;
-         }
-         if (smoker == 1)//placeholder. 1 means smoker, 2 means nonsmoker.
-         {
-            totalFee = totalFee + 100;
-         }
-         if (bmi > 35)
-         {
-            totalFee = ((bmi - 35) * 20) +totalFee;
-         }
-         
-         return totalFee;
-         
-      }
-      
-      public void results (int polnum, String polprov, String polFirst, String polLast, int polAge, String polSmoke, double polHeight, double polWeight, double polBMI, double price)
-      
-      {
-      System.out.println("Policy Number: " + polnum);
-      System.out.println("Provider Name: " + polprov);
-      System.out.println("Policyholder’s First Name: " + polFirst);
-      System.out.println("Policyholder’s Last Name: " + polLast);
-      System.out.println("Policyholder’s Age: " + polAge);
-      System.out.println("Policyholder’s Smoking Status (1= Smoker, 2= Non-Smoker, 3= N/A): " + polSmoke);
-      System.out.println("Policyholder’s Height: " + polHeight);
-      System.out.println("Policyholder’s Weight: " + polWeight);
-      System.out.println("Policyholder’s BMI: " + String.format("%.2f", polBMI));
-      System.out.println("Policy Price: $" + String.format("%.2f", price));
-      }      
-      
    }
+   public Policy(String policyNumber, String providerName, policyHolderM poH)
+   {
+      this.policyNumber = policyNumber;
+      this.providerName = providerName;
+      this.poH = new policyHolderM(poH);
+   }
+   //oohhh i get it now.
+   //it's just like an ordinary constructor that makes new variables and assigns them to the original variables.
+   
+   //again... setters and getters.
+   //setters
+   public void setPolicyNumber(String policyNumber)
+   {
+      this.policyNumber = policyNumber;
+   }
+   public void setProviderName(String providerName)
+   {
+      this.providerName = providerName;
+   }
+   public void setPolicyHoler(policyHolderM poH)
+   {
+      this.poH = new policyHolderM(poH);//a 'deep copy'.
+   }
+   //getters
+   public String getPolicyNumber()
+   {
+      return policyNumber;
+   }
+   public String getProviderName()
+   {
+      return providerName;
+   }
+   public policyHolderM getPolicyHolder()
+   {
+      return new policyHolderM(poH);
+   }
+   //setters and getters end.
+   
+   //price time
+   
+   public double getPrice()
+   {
+      //okay, just to note.
+      //since im done with the setters, getters thing, i can use the class's true policyHolder ref variable, poH, instead of creating a new policyholder object again
+      final double bPrice = 600;//changed it to reflect the base price, just so that the value doesnt get stale
+      double price = bPrice;//then we set price to bPrice for every iteration, just so that it's freshly set back every run.
+      
+      if (poH.getAge() > 50)
+      {
+         price = price + 75;
+      }
+      if (poH.getSmokingStatus().equalsIgnoreCase("smoker"))//hehe made this myself
+      {
+         price = price + 100;
+      }
+      if (poH.getBMI() > 35)
+      {
+         price = price + (poH.getBMI() - 35) * 20;
+      }
+      return price;
+   }
+   
+   public String toString()
+   {
+      return String.format("Policy Number: " + policyNumber + "\nProvider Name: " + providerName + poH + "\nPrice :$%.2f " , getPrice());
+   }
+   
+   //finally... finished...
+}
